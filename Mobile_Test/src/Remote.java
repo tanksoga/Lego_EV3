@@ -184,7 +184,7 @@ public class Remote extends JFrame
 		try 
 		{
 			System.out.println("Send Command:" + command);
-			//pw.write(command+"\n");pw.flush();
+			pw.write(command+"\n");pw.flush();
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
