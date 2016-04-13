@@ -19,6 +19,11 @@ public class Remote extends JFrame
 	
 	private Socket socket = null;
  
+	private boolean isUpPressed = false;
+	private boolean isDownPressed = false;
+	private boolean isLeftPressed = false;
+	private boolean isRightPressed = false;
+	
 	private final JButton left;
 	private final JButton right;
 	private final JButton up;
@@ -92,16 +97,29 @@ public class Remote extends JFrame
 			}
  
 			@Override
-			public void keyReleased(KeyEvent event) {
-				if(KeyEvent.VK_UP == event.getKeyCode()){
+			public void keyReleased(KeyEvent event) 
+			{
+				if(KeyEvent.VK_UP == event.getKeyCode())
+				{
 					upRelease();
-				} else if(KeyEvent.VK_DOWN == event.getKeyCode()){
+					isUpPressed = false;
+				} 
+				else if(KeyEvent.VK_DOWN == event.getKeyCode())
+				{
 					downRelease();
-				} else if(KeyEvent.VK_LEFT == event.getKeyCode()){
+					isDownPressed = false;
+				} 
+				else if(KeyEvent.VK_LEFT == event.getKeyCode())
+				{
 					leftRelease();
-				} else if(KeyEvent.VK_RIGHT == event.getKeyCode()){
+					isLeftPressed = false;
+				} 
+				else if(KeyEvent.VK_RIGHT == event.getKeyCode())
+				{
 					rightRelease();
-				} else if(KeyEvent.VK_ESCAPE == event.getKeyCode()){
+					isRightPressed = false;
+				} 
+				else if(KeyEvent.VK_ESCAPE == event.getKeyCode()){
 					sendCommand("STOP");
 					if(socket != null)
 					{
@@ -118,19 +136,42 @@ public class Remote extends JFrame
 			}
  
 			@Override
-			public void keyPressed(KeyEvent event) {
-				if(KeyEvent.VK_UP == event.getKeyCode()){
-					upPress();
-				} else if(KeyEvent.VK_DOWN == event.getKeyCode()){
-					downPress();
-				} else if(KeyEvent.VK_LEFT == event.getKeyCode()){
-					leftPress();
-				} else if(KeyEvent.VK_RIGHT == event.getKeyCode()){
-					rightPress();
+			public void keyPressed(KeyEvent event) 
+			{
+				if(KeyEvent.VK_UP == event.getKeyCode())
+				{
+					if(!isUpPressed)
+					{
+						upPress();
+						isUpPressed = true;
+					}
+				} 
+				else if(KeyEvent.VK_DOWN == event.getKeyCode())
+				{
+					if(!isDownPressed)
+					{
+						downPress();
+						isDownPressed = true;
+					}
+				}
+				else if(KeyEvent.VK_LEFT == event.getKeyCode())
+				{
+					if(!isLeftPressed)
+					{
+						leftPress();
+						isLeftPressed = true;
+					}
+				} 
+				else if(KeyEvent.VK_RIGHT == event.getKeyCode())
+				{
+					if(!isRightPressed)
+					{
+						rightPress();
+						isRightPressed = true;
+					}
 				}
 			}
 		});
- 
  
 		pack();
 	}
@@ -143,7 +184,7 @@ public class Remote extends JFrame
 		try 
 		{
 			System.out.println("Send Command:" + command);
-			pw.write(command+"\n");pw.flush();
+			//pw.write(command+"\n");pw.flush();
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
