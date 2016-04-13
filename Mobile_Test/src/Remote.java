@@ -55,7 +55,8 @@ public class Remote extends JFrame
 		{
  
 			@Override
-			public void mouseReleased(MouseEvent e) {
+			public void mouseReleased(MouseEvent e) 
+			{
 				leftRelease();
 //				System.out.println("LEFT-RELEASE\n");pw.flush();
 			}
