@@ -51,7 +51,8 @@ public class Remote extends JFrame
  
 		left = new JButton("LEFT");
 		this.getContentPane().add(left, BorderLayout.WEST);
-		left.addMouseListener(new MouseAdapter() {
+		left.addMouseListener(new MouseAdapter() 
+		{
  
 			@Override
 			public void mouseReleased(MouseEvent e) {
