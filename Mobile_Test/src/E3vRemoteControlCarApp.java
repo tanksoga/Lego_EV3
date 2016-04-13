@@ -9,7 +9,8 @@ import lejos.hardware.port.MotorPort;
 import lejos.utility.Delay;
 
 
-public class E3vRemoteControlCarApp {
+public class E3vRemoteControlCarApp 
+{
 
 	static boolean isRunning = true;
 
