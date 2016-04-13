@@ -1,8 +1,7 @@
 import java.awt.BorderLayout;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -17,6 +16,8 @@ public class Remote extends JFrame
 {
  
 	private static final long serialVersionUID = -8402983606638099877L;
+	
+	private Socket socket = null;
  
 	private final JButton left;
 	private final JButton right;
@@ -34,8 +35,8 @@ public class Remote extends JFrame
  
 	public Remote() {
 		try {
-			Socket socket = new Socket("192.168.2.46", 19231);
-//			Socket socket = new Socket("127.0.0.1", 19231);//for mocking
+			socket = new Socket("192.168.2.46", 19231);
+
 			pw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -43,103 +44,44 @@ public class Remote extends JFrame
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception eee)
+		{
+			eee.printStackTrace();
 		}
  
 		setLayout(new BorderLayout());
  
- 
- 
 		left = new JButton("LEFT");
 		this.getContentPane().add(left, BorderLayout.WEST);
-		left.addMouseListener(new MouseAdapter() 
+		left.addKeyListener(new KeyAdapter()
 		{
- 
 			@Override
-			public void mouseReleased(MouseEvent e) 
-			{
-				leftRelease();
-//				System.out.println("LEFT-RELEASE\n");pw.flush();
-			}
- 
- 
-			@Override
-			public void mousePressed(MouseEvent e) {
-				leftPress();
-//				System.out.println("LEFT-PRESS\n");pw.flush();
-			}
- 
- 
+	        public void keyPressed(KeyEvent event)
+	        {
+				if (event.getKeyCode() == KeyEvent.VK_LEFT)
+					leftPress();
+	        }
+			
+			 @Override
+		     public void keyReleased(KeyEvent event) 
+			 {
+				 if (event.getKeyCode() == KeyEvent.VK_LEFT)
+					 leftRelease();
+		     }
 		});
+		
 		right = new JButton("RIGHT");
 		this.getContentPane().add(right, BorderLayout.EAST);
-		right.addMouseListener(new MouseAdapter() {
- 
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				rightRelease();
-//				System.out.println("RIGHT-RELEASE\n");pw.flush();
-			}
- 
- 
- 
-			@Override
-			public void mousePressed(MouseEvent e) {
-				rightPress();
-//				System.out.println("RIGHT-PRESS\n");pw.flush();
-			}
- 
- 
-		});
+		
 		up = new JButton("UP");
 		this.getContentPane().add(up, BorderLayout.NORTH);
-		up.addMouseListener(new MouseAdapter() {
- 
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				upRelease();
-//				System.out.println("UP-RELEASE\n");pw.flush();
-			}
- 
- 
- 
-			@Override
-			public void mousePressed(MouseEvent e) {
-				upPress();
-//				System.out.println("UP-PRESS\n");pw.flush();
-			}
- 
- 
-		});
+		
 		down = new JButton("DOWN");
 		this.getContentPane().add(down, BorderLayout.SOUTH);
-		down.addMouseListener(new MouseAdapter() {
- 
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				downRelease();
-//				System.out.println("DOWN-RELEASE\n");
-			}
- 
- 
- 
-			@Override
-			public void mousePressed(MouseEvent e) {
-				downPress();
-//				System.out.println("DOWN-PRESS\n");
-			}
- 
- 
-		});
+		
 		stop = new JButton("STOP\n");
 		this.getContentPane().add(stop, BorderLayout.CENTER);
-		stop.addMouseListener(new MouseAdapter() {
- 
-			@Override
-			public void mousePressed(MouseEvent e) {
-				sendCommand("STOP");
-			}
-		});
- 
+		
 		//keypad arrows work only if the focus is on the stop button
 		//lame but that's life
 		stop.addKeyListener(new KeyListener() {
@@ -159,6 +101,19 @@ public class Remote extends JFrame
 					leftRelease();
 				} else if(KeyEvent.VK_RIGHT == event.getKeyCode()){
 					rightRelease();
+				} else if(KeyEvent.VK_ESCAPE == event.getKeyCode()){
+					sendCommand("STOP");
+					if(socket != null)
+					{
+						try
+						{
+							socket.close();
+						}
+						catch(Exception e)
+						{
+							e.printStackTrace();
+						}
+					}
 				}
 			}
  
@@ -185,9 +140,11 @@ public class Remote extends JFrame
 	}
  
 	private void sendCommand(String command) {
-		try {
+		try 
+		{
+			System.out.println("Send Command:" + command);
 			pw.write(command+"\n");pw.flush();
-		} catch (IOException e1) {
+		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 	}
