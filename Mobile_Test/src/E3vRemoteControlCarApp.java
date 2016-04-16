@@ -47,32 +47,28 @@ public class E3vRemoteControlCarApp
 					engineMotor.backward();;
 					break;
 				case "UP-RELEASE":
-					engineMotor.stop(true);
+					engineMotor.stop();
 					break;
 				case "DOWN-PRESS":
 					engineMotor.setSpeed(6000);
 					engineMotor.forward();
 					break;
 				case "DOWN-RELEASE":
-					engineMotor.stop(true);
+					engineMotor.stop();
 					break;
 				case "LEFT-PRESS":
-					turnMottor.setSpeed(200);
+					turnMottor.setSpeed(100);
 					turnMottor.rotate(-180, true);
 					break;
 				case "LEFT-RELEASE":
-					turnMottor.setSpeed(200);
-					turnMottor.rotate(180, true);
-					turnMottor.stop(true);
+					turnMottor.stop();
 					break;
 				case "RIGHT-PRESS":
-					turnMottor.setSpeed(200);
+					turnMottor.setSpeed(100);
 					turnMottor.rotate(180, true);
 					break;
 				case "RIGHT-RELEASE":
-					turnMottor.setSpeed(200);
-					turnMottor.rotate(-180, true);
-					turnMottor.stop(true);
+					turnMottor.stop();
 					break;
 				case "STOP":
 					E3vRemoteControlCarApp.isRunning = false;
