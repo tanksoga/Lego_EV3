@@ -25,9 +25,7 @@ import com.google.common.collect.ImmutableList;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.EV3;
-import lejos.hardware.lcd.GraphicsLCD;
 import lejos.hardware.video.Video;
-import lejos.hardware.video.YUYVImage;
 
 public class TakePicture
 {
@@ -47,7 +45,6 @@ public class TakePicture
 		try
 		{
 			EV3 ev3 = (EV3) BrickFinder.getLocal();
-			GraphicsLCD g = BrickFinder.getDefault().getGraphicsLCD();
 			Video video = ev3.getVideo();
 			video.open(WIDTH, HEIGHT);
 			byte[] frame = video.createFrame();
