@@ -57,18 +57,22 @@ public class E3vRemoteControlCarApp
 					engineMotor.stop();
 					break;
 				case "LEFT-PRESS":
+				     System.out.println("Before Left turn:" + turnMottor.getTachoCount());
 					turnMottor.setSpeed(100);
 					turnMottor.rotate(-180, true);
 					break;
 				case "LEFT-RELEASE":
 					turnMottor.stop();
+					System.out.println("After Left turn:" + turnMottor.getTachoCount());
 					break;
 				case "RIGHT-PRESS":
+				     System.out.println("Before Right turn:" + turnMottor.getTachoCount());
 					turnMottor.setSpeed(100);
 					turnMottor.rotate(180, true);
 					break;
 				case "RIGHT-RELEASE":
 					turnMottor.stop();
+					System.out.println("After Right turn:" + turnMottor.getTachoCount());
 					break;
 				case "STOP":
 					E3vRemoteControlCarApp.isRunning = false;
