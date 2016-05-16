@@ -8,6 +8,7 @@ import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3GyroSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.SampleProvider;
+import lejos.utility.Delay;
 
 public class SelfMove
 {
@@ -32,7 +33,7 @@ public class SelfMove
                
                System.out.println("Start...");
                
-               //initSteerToCenter();
+               initSteerToCenter();
                move();
                gyroSensor.close();
           }
@@ -50,22 +51,18 @@ public class SelfMove
                moveMotor.setSpeed(4000);
                moveMotor.backward();
                
-               while (true)
+               while (!Button.ESCAPE.isDown())
                {
-                    if (Button.ESCAPE.isDown())
-                    {
-                         moveMotor.stop();
-                    }
                     
                     float[] angle = { 0 };
                     angleProvider.fetchSample(angle, 0);
                     
                     System.out.println("Angle" + angle[0]);
-                    
-                    gyroSensor.reset();
-                    
-                    Thread.sleep(100);
+                  
+                    Delay.msDelay(100);
                }
+               
+               moveMotor.stop();
           }
           catch(Exception e)
           {
